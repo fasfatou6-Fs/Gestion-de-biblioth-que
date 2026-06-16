@@ -10,6 +10,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:create,App\Models\Livre');
 });
 
+Route::post('/emprunts', [App\Http\Controllers\EmpruntController::class, 'store']);
+
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
