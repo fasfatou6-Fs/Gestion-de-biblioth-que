@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\LivreController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/livres/create', [LivreController::class, 'create']);
+    Route::post('/livres', [LivreController::class, 'store']);
+});
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
