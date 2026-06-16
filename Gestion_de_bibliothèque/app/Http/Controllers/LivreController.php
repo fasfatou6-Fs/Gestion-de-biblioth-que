@@ -3,18 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Livre;
 
 class LivreController extends Controller
 {
+    /**
+     * Affiche le formulaire de création de livre
+     */
     public function create()
     {
-        return view('livres.create'); // tu peux créer une vue Blade simple pour tester
+        // Retourne la vue Blade "resources/views/livres/create.blade.php"
+        return view('livres.create');
     }
 
+    /**
+     * Enregistre un nouveau livre avec validation
+     */
     public function store(Request $request)
     {
+        // Validation des champs
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
             'auteur' => 'required|string|max:255',
@@ -22,8 +29,10 @@ class LivreController extends Controller
             'exemplaires' => 'required|integer|min:1',
         ]);
 
+        // Création du livre
         Livre::create($validated);
 
+        // Redirection avec message de succès
         return redirect()->back()->with('success', 'Livre ajouté avec succès');
     }
 }

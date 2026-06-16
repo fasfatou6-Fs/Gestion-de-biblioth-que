@@ -13,8 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        \App\Models\Livre::class => \App\Policies\LivrePolicy::class,
     ];
+
 
     /**
      * Register any authentication / authorization services.
