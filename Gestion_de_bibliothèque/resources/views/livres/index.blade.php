@@ -5,7 +5,9 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>📖 Liste des livres</h2>
-    <a href="{{ route('livres.create') }}" class="btn btn-primary">➕ Ajouter un livre</a>
+    @if(auth()->user()->estAdmin())
+        <a href="{{ route('livres.create') }}" class="btn btn-primary">➕ Ajouter un livre</a>
+    @endif
 </div>
 
 <div class="card">

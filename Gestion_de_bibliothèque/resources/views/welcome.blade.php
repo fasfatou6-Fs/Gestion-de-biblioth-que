@@ -153,7 +153,7 @@
         <main class="hero">
             <section class="hero-header">
                 <span>Présentation</span>
-                <h1>Un outil de gestion de bibliothèque la fois simple et e�minin</h1>
+
                 <p>Cette page pr"sente la solution de gestion de bibliothèque. Cree des comptes, administre les livres, suis les emprunts, et gère les pénalités avec une interface douce et professionnelle.</p>
                 <div class="hero-buttons">
                     <a href="{{ route('login') }}" class="btn-primary">Se connecter</a>
@@ -165,7 +165,7 @@
             <aside class="hero-features">
                 <div class="feature-card">
                     <h3>Bibliothèque présente</h3>
-                    <p>Une présentation claire de lqapplication, idéqle pour démontrer le projet TP.</p>
+                    <p>Une présentation claire de lqapplication, idéqle pour démontrer le projet TP DevOps.</p>
                 </div>
                 <div class="feature-card">
                     <h3>Roles distincts</h3>

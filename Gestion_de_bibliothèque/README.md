@@ -1,66 +1,61 @@
-![![alt text](image.png)](image.png)<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SGBLE : Système Intégré de Gestion de Bibliothèque et Restitutions
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SGBLE est un prototype d'application web moderne et sécurisé conçu pour automatiser la gestion d'une bibliothèque universitaire (flux d'acquisitions, catalogue, transactions d'emprunts, et régularisation des litiges). Ce projet a été développé en équipe dans le cadre de notre initiation pratique aux méthodologies Agiles (Scrum) et aux processus DevOps sous le framework **Laravel**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎨 Identité Visuelle et Design
+L'interface graphique de l'application est habillée d'une charte graphique personnalisée de style **Rose Marine et Violet** :
+* **Bleu Marine Profond :** Appliqué aux structures de navigation (sidebar, navbar) pour ancrer le professionnalisme de la plateforme.
+* **Violet et Rose Poudré :** Utilisés pour accentuer les éléments dynamiques (boutons d'action, états de survol, badges de statut des stocks et fenêtres modales).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Fonctionnalités Principales & Comportements Implémentés
 
-## Learning Laravel
+Le prototype opérationnel en local s'articule autour de trois flux utilisateurs majeurs :
+1.  **Consultation du Catalogue :** Recherche multicritère et affichage dynamique des ouvrages (`Livres`) accessible à tous les utilisateurs connectés.
+2.  **Gestion Intelligente des Emprunts :** Automatisation du flux d'emprunt avec pré-sélection de l'ouvrage depuis sa fiche descriptive et décrémentation automatique des stocks physiques.
+3.  **Régularisation des Litiges (Pénalités) :** Système d'interception par fenêtre modale Bootstrap permettant la simulation de paiement en direct avec capture dynamique du montant de la pénalité.
+4.  **Tableaux de Bord Rôle-Dépendant :** Indicateurs globaux pour l'administration et statistiques personnelles restreintes pour le lecteur.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🔐 Sécurisation & Architecture RBAC
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+L'accès à l'application est strictement cloisonné par rôles (Administrateur / Bibliothécaire vs Étudiant Lecteur) via des mécanismes de sécurité transversaux :
+* **Middlewares de Routes (`web.php`) :** Isolation hermétique des fonctions critiques (création, modification, suppression, accès aux logs) via le middleware `role:admin|bibliothecaire`.
+* **Contrôle au Niveau des Contrôleurs :** `EmpruntController` filtre dynamiquement les indexes selon le rôle et force l'injection de `auth()->id()` pour interdire l'usurpation d'identité. `PenaliteController` restreint l'action de paiement au seul propriétaire ou à l'administrateur.
+* **Masquage Adaptatif (Vues Blade) :** Les fonctions d'édition et de suppression sont conditionnellement masquées pour les non-administrateurs.
+* **Traçabilité DevOps (Logs d'Audit) :** Chaque action sensible déclenche automatiquement une écriture dans la table `logs_activites` (ID utilisateur, type d'action, horodatage complet, adresse IP).
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Installation et Déploiement en Local
 
-### Premium Partners
+### Prérequis
+* Laragon / XAMPP / WampServer (PHP >= 8.x, MySQL)
+* Composer
+* Node.js & NPM
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Procédure de configuration rapide
+```bash
+# 1. Cloner le dépôt et se positionner dans le répertoire du projet
+cd .\Gestion_de_bibliothèque\
 
-## Contributing
+# 2. Installer les dépendances PHP
+composer install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 3. Installer les dépendances JavaScript et générer les assets (Vite)
+npm install
+npm run dev
 
-## Code of Conduct
+# 4. Configurer le fichier d'environnement
+cp .env.example .env
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Exécuter les migrations et injecter les jeux de données de test (Seeders)
+php artisan migrate:fresh --seed
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 6. Lancer le serveur de développement Laravel
+php artisan serve
