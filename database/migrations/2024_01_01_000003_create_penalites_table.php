@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('penalites', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role')->default('user'); // user, admin, bibliothecaire
-            $table->rememberToken();
+            $table->foreignId('emprunt_id')->constrained('emprunts')->onDelete('cascade');
+            $table->decimal('montant', 10, 2);
+            $table->integer('nbJoursRetard');
+            $table->date('dateCreation');
+            $table->string('statusPaiement')->default('non_payé'); // non_payé, payé
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('penalites');
     }
 };

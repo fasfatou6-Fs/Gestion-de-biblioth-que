@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -45,18 +45,53 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Get the emprunts for this user.
+     */
     public function emprunts(): HasMany
     {
-        return $this->hasMany(Emprunt::class);
+        return $this->hasMany(Emprunt::class, 'user_id');
     }
 
+    /**
+     * Get the logs for this user.
+     */
     public function logs(): HasMany
     {
-        return $this->hasMany(Log::class);
+        return $this->hasMany(Log::class, 'user_id');
     }
 
+    /**
+     * Vérifier si l'utilisateur est un admin
+     */
     public function estAdmin(): bool
     {
         return $this->role === 'admin' || $this->role === 'bibliothecaire';
+    }
+
+    /**
+     * Vérifier si l'utilisateur est un utilisateur normal
+     */
+    public function estUtilisateur(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    /**
+     * Connecter et déconnecter un utilisateur
+     */
+    public function seConnecter()
+    {
+        Log::enregistrerAction("Connexion de l'utilisateur {$this->nom}");
+        return $this;
+    }
+
+    /**
+     * Déconnecter l'utilisateur
+     */
+    public function seDeconnecter()
+    {
+        Log::enregistrerAction("Déconnexion de l'utilisateur {$this->nom}");
+        return $this;
     }
 }
